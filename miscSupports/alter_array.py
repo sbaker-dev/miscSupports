@@ -9,6 +9,33 @@ def flatten(list_of_lists):
     return list(chain(*list_of_lists))
 
 
+def chunk_list(list_to_chunk, chunk_length):
+    """
+    Returns n-sized chunks from list.
+    """
+    return [list_to_chunk[i:i + max(1, chunk_length)] for i in range(0, len(list_to_chunk), max(1, chunk_length))]
+
+
+def find_duplicates(list_to_check):
+    """
+    This finds duplicates in a list of values of any type and then returns the values that are duplicates. Given Counter
+    only works with hashable types, ie it can't work with lists, create a tuple of the lists and then count if the
+    list_to_check contains un-hashable items
+
+    :param list_to_check: A list of values with potential duplicates within it
+    :type list_to_check: list
+
+    :return:The values that where duplicates
+    :rtype: list
+    """
+    try:
+        counted_list = Counter(list_to_check)
+    except TypeError:
+        counted_list = Counter([tuple(x) for x in list_to_check])
+
+    return [key for key in counted_list if counted_list[key] > 1]
+
+
 class Key:
     def __init__(self, diff):
         """
