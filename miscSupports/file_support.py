@@ -1,5 +1,6 @@
 import json
 import yaml
+import csv
 import os
 
 
@@ -62,3 +63,13 @@ def load_yaml(path_to_file):
             return yaml.safe_load(f)
         except yaml.YAMLError:
             raise yaml.YAMLError
+
+
+def extract_headers(path):
+    """
+    Extract the first row from the file and return it as a list
+    """
+    with open(path) as header_extract:
+        csv_data = csv.reader(header_extract)
+        for row in csv_data:
+            return row
