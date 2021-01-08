@@ -25,7 +25,7 @@ def directory_iterator(directory, file_only=True):
         return [file for file in os.listdir(directory)]
 
 
-def read_json(path):
+def load_json(path):
     """
     Read in a json file
     """
@@ -33,19 +33,18 @@ def read_json(path):
         return json.load(ff)
 
 
-def write_json(write_directory, write_data, write_name):
+def write_json(write_data, write_directory, write_name):
     """
     This writes out a json file
+
+    :param write_data: Data you want to write out to a json file
+    :type: write_data: Any
 
     :param write_directory: Where to write the json file
     :type write_directory: str
 
-
     :param write_name: Name of the database you want to write
     :type write_name: str
-
-    :param write_data: Data you want to write out to a json file
-    :type: write_data: Any
 
     :return: Nothing, just write out the file to the specified directory named the specified name
     :rtype: None
