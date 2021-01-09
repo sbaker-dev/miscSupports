@@ -1,5 +1,6 @@
 from itertools import groupby, chain
 from collections import Counter
+import numpy as np
 
 
 def flatten(list_of_lists):
@@ -94,6 +95,27 @@ def group_adjacent(list_to_group, distance=1):
     method that are within a given distance of each other
     """
     return [list(g) for k, g in groupby(list_to_group, key=Key(distance))]
+
+
+def in_between_list(points, subdivision):
+    """
+    This takes a list of floats or ints and returns a list with a number of sub-divisions between each element
+    :param points: A list of points
+    :param subdivision: Number of sub-divisions between each pair of points
+    :return: list of points with subdivisions
+    """
+
+    # Numpy is inclusive, so if the user wants 5 subdivisions then by default only 3 points would be added
+    subdivision = subdivision + 2
+
+    # Use numpy to in-between by the number of subdivisions for each element in the list to its previous element
+    spaced_lists = [np.linspace(points[i - 1], v, subdivision).tolist() for i, v in enumerate(points) if i > 0]
+
+    # As the numpy lists are inclusive the last point of ever sub list bar the last will be a duplicate so we remove it
+    list_return = [spaced[:-1] if i != len(spaced_lists) - 1 else spaced for i, spaced in enumerate(spaced_lists)]
+
+    # Return the flattened list
+    return flatten(list_return)
 
 
 def in_between_points_list(points, subdivision):
