@@ -122,6 +122,38 @@ def in_between_list(points, subdivision):
     return sub_divided
 
 
+def in_between_points_on_list(points_list, divisions):
+    """
+    This takes a list of numerical values (floats or ints) and a list of divisions of ints of (points_list) - 1. This
+    method will then uses the number of sub divisions within the list of divisions to add new points to the points list
+    where you have request them
+
+    Example
+    ----------
+    points_list = [5, 10, 12.5]
+    divisions = [1, 0]
+    values = in_between_points_on_list(points_list, divisions) = [5, 7.5, 10, 12.5]
+
+    :param points_list: List of points to be in-between
+    :param divisions: list of ints that shows the number of divisions to apply between a given pair of points. Needs to
+        be of length points_list - 1
+    :return: List of points with added points
+    """
+    points_out = []
+    for index, point in enumerate(points_list):
+        if index > 0 and divisions[index - 1] > 0:
+            # Get the value to multiple by an index to get the subdivisions
+            sub_points = (points_list[index] - points_list[index - 1]) / (divisions[index - 1] + 1)
+
+            # multiple the sub_points values by 1, 2, N etc and add it to the previous entry into the list of points
+            for ii in range(1, divisions[index - 1] + 2):
+                points_out.append(points_list[index - 1] + (sub_points * ii))
+
+        else:
+            points_out.append(point)
+    return points_out
+
+
 def flip_list(list_of_lists, length_return=False):
     """
     This will take a list of lists, and then flip it. It requires all sub lists to be the same length.
