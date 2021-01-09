@@ -96,7 +96,7 @@ def group_adjacent(list_to_group, distance=1):
     return [list(g) for k, g in groupby(list_to_group, key=Key(distance))]
 
 
-def in_between_list(points, subdivision):
+def in_between_points_list(points, subdivision):
     """
     This will in-between a list of points, where it will add a number of points equal to subdivisions between each point
 
