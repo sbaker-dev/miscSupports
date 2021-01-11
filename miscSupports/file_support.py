@@ -1,3 +1,5 @@
+from csvObject import CsvObject, write_csv
+
 import json
 import yaml
 import csv
@@ -72,3 +74,28 @@ def extract_headers(path):
         csv_data = csv.reader(header_extract)
         for row in csv_data:
             return row
+
+
+def rename_headers(csv_file_path, new_headers, write_dir, write_name):
+    """
+    This will take a path to a csv file, and then re-write the file with a new set of headings. Headers to be replaced
+    are accessed via key's from a dict of new_headers where the old headers to be replaced are the keys and the new
+    headers to replace them the values
+
+    :param write_name: Write Name
+    :param write_dir: Write directory
+    :param csv_file_path: path to a csv file
+    :param new_headers: dict of Old Header: New Header
+    :return: Nothing, overide file with new headers
+    """
+    current_file = CsvObject(csv_file_path)
+
+    # Change Headers that are within the new header Dict, otherwise just keep the old header
+    reformed_headers = []
+    for header in current_file.headers:
+        try:
+            reformed_headers.append(new_headers[header])
+        except KeyError:
+            reformed_headers.append(header)
+
+    write_csv(write_dir, write_name, reformed_headers, current_file.row_data)
