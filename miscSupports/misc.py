@@ -1,13 +1,3 @@
-from datetime import datetime
-
-
-def terminal_time():
-    """
-    A way to remember when you initialised a cell by return the current hour and minute as a string
-    """
-    return f"{datetime.now().time().hour}:{datetime.now().time().minute}"
-
-
 def parse_as_numeric(value, return_type=int):
     """
     Try isolating converting to return type, if a ValueError Arises then return zero.
