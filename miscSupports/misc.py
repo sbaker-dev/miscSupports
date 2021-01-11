@@ -1,5 +1,4 @@
 from datetime import datetime
-import numpy as np
 
 
 def terminal_time():
@@ -17,11 +16,6 @@ def parse_as_numeric(value, return_type=int):
         return return_type(value)
     except ValueError:
         return 0
-
-
-def shapely_points_to_array(points_list):
-    """Convert Shapely cords to a ContourObject readable numpy array"""
-    return np.array([[cord] for cord in points_list])
 
 
 def index_modifier(index, modifier, index_mod=0):
