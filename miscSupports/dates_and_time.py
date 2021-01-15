@@ -27,10 +27,24 @@ def invert_dates(dates_list, delimiter="/"):
         raise TypeError(f"invert_dates expects a str, list, or tuple yet found {type(dates_list)}")
 
 
+def restore_dates(inverted_dates):
+    """
+    This restores dates back to a datetime date from yyyymmdd.
+    """
+    if isinstance(inverted_dates, (str, int)):
+        inverted_dates = str(inverted_dates)
+        year, month, day = int(inverted_dates[:4]), int(inverted_dates[4:6]), int(inverted_dates[6:])
+        return datetime(year, month, day)
+
+    elif isinstance(inverted_dates, (list, tuple)):
+        return [datetime(int(str(date)[:4]), int(str(date)[4:6]), int(str(date)[6:])) for date in inverted_dates]
+
+    else:
+        raise TypeError(f"restores_dates expects a str, list or tuple yet found {type(inverted_dates)}")
+
+
 def terminal_time():
     """
     A way to remember when you initialised a cell by return the current hour and minute as a string
     """
     return f"{datetime.now().time().hour}:{datetime.now().time().minute}"
-
-
