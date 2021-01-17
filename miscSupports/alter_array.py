@@ -189,3 +189,28 @@ def flip_list(list_of_lists, length_return=False):
         return [[sub[i] for sub in list_of_lists] for i in range(sub_key_length[0])], sub_key_length[0]
     else:
         return [[sub[i] for sub in list_of_lists] for i in range(sub_key_length[0])]
+
+
+def spaced_points(points_list, return_spacing=False):
+    """
+    Spaces a list of points based on the average distance between each point
+
+    This will create a spacing parameter base on the average distance between each numeric in a list of numeric, and
+    create a new list with spacing to ensure there is no gap larger than the spacing parameter. This **does not**
+    produce an  equally spaced list, as this keeps the original elements. If you want the spacing returned you can pass
+    True to the second parameter, else only the spaced list will be returned
+    """
+    # We use the average distance between each point to get a length for rough spacing between the edge loops
+    distance_y = [points_list[i] - points_list[i - 1] for i in range(len(points_list)) if i > 0]
+    spacing = np.mean(distance_y)
+
+    # This is the number of subdivisions between each ordered y intersection that is required
+    subdivisions = [int((points_list[i] - points_list[i - 1]) / spacing) for i in range(1, len(points_list))]
+
+    # Now we space the region between the min and max of our points of intersection with the spacing
+    points_spaced = in_between_points_on_list(points_list, subdivisions)
+
+    if return_spacing:
+        return spacing, points_spaced
+    else:
+        return points_spaced
