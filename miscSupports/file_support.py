@@ -1,5 +1,7 @@
 from csvObject import CsvObject, write_csv
 
+from pathlib import Path
+import pickle
 import json
 import yaml
 import csv
@@ -64,6 +66,18 @@ def load_yaml(path_to_file):
             return yaml.safe_load(f)
         except yaml.YAMLError:
             raise yaml.YAMLError
+
+
+def load_pickle(directory, file_name):
+    """Load Pickle Data"""
+    with open(Path(directory, file_name), 'rb') as handle:
+        return pickle.load(handle)
+
+
+def write_pickle(directory, file_name, data):
+    """Write Pickle Data"""
+    with open(Path(directory, file_name), 'wb') as handle:
+        pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 def extract_headers(path):
