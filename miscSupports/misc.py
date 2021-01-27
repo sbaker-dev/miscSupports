@@ -1,3 +1,6 @@
+from distutils.util import strtobool
+
+
 def parse_as_numeric(value, return_type=int):
     """
     Try isolating converting to return type, if a ValueError Arises then return zero.
@@ -34,3 +37,17 @@ def index_range(index, modifier, inclusive=True):
         return range(index_modifier(index, modifier), index_modifier(index, modifier, 1) + 1)
     else:
         return range(index_modifier(index, modifier), index_modifier(index, modifier, 1))
+
+
+def string_to_bool(value):
+    """
+    This will convert a string to a bool if it is a str, return the bool if it was a bool, and raise a TypeError
+    otherwise
+    """
+
+    if isinstance(value, bool):
+        return value
+    elif isinstance(value, str):
+        return bool(strtobool(value))
+    else:
+        raise TypeError(f"string_to_bool expects a bool or str yet was passed {type(value)}")
