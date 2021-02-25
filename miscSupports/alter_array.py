@@ -219,3 +219,13 @@ def spaced_points(points_list, return_spacing=False, use_spacing=None):
         return spacing, points_spaced
     else:
         return points_spaced
+
+
+def remove_nested_duplicates(nested):
+    """
+    Removes nested duplicates lists, in a list of lists
+
+    :param nested: A list of lists
+    :return: A list of lists without duplicates
+    """
+    return list(nested for nested, _ in groupby(nested))
