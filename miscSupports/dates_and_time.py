@@ -5,10 +5,10 @@ def invert_dates(dates_list, delimiter="/"):
     """
     Returns dates of type dd-mmy-yyy into yyyymmdd
 
-    :param dates_list: List of dates to invert, or a string of a date to invert
-    :type dates_list: list[str] | str
+    :param dates_list: List of dates to invert, a string of a date to invert, or a datetime to invert
+    :type dates_list: list[str] | str | datetime
 
-    :param delimiter: The delimiter to split the string into [dd, mm, yyyy]
+    :param delimiter: The delimiter to split the string into [dd, mm, yyyy] if date is a str
     :type delimiter: str
 
     :return: list of inverted dates, or a string of an inverted date
@@ -22,6 +22,9 @@ def invert_dates(dates_list, delimiter="/"):
     elif isinstance(dates_list, (list, tuple)):
         split_dates = [[time.zfill(2) for time in date.split(delimiter)] for date in dates_list]
         return [year + month + day for day, month, year in split_dates]
+
+    elif isinstance(dates_list, datetime):
+        return str(dates_list.year) + str(dates_list.month).zfill(2) + str(dates_list.day).zfill(2)
 
     else:
         raise TypeError(f"invert_dates expects a str, list, or tuple yet found {type(dates_list)}")

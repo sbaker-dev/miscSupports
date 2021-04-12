@@ -229,3 +229,8 @@ def remove_nested_duplicates(nested):
     :return: A list of lists without duplicates
     """
     return list(nested for nested, _ in groupby(nested))
+
+
+def sort_lambda(list_to_sort, index_to_sort_by):
+    """Lambda sorting"""
+    list_to_sort.sort(key=lambda x: x[index_to_sort_by])
