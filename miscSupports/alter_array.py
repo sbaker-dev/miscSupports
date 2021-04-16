@@ -234,3 +234,19 @@ def remove_nested_duplicates(nested):
 def sort_lambda(list_to_sort, index_to_sort_by):
     """Lambda sorting"""
     list_to_sort.sort(key=lambda x: x[index_to_sort_by])
+
+
+def normalisation_min_max(list_of_values):
+    """
+    Will normalise a list to be between 0 and 1
+
+    :param list_of_values: A list of numeric values
+    :type list_of_values: list[int] | list[float]
+
+    :return: A list of values between zero and 1
+    :rtype: list[float]
+    """
+
+    value_min = min(list_of_values)
+    value_max = max(list_of_values)
+    return [((value - value_min) / (value_max - value_min)) for value in list_of_values]
