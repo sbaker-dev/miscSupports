@@ -4,6 +4,7 @@ from pathlib import Path
 import pickle
 import json
 import yaml
+import gzip
 import csv
 import os
 
@@ -100,7 +101,7 @@ def rename_headers(csv_file_path, new_headers, write_dir, write_name):
     :param write_dir: Write directory
     :param csv_file_path: path to a csv file
     :param new_headers: dict of Old Header: New Header
-    :return: Nothing, overide file with new headers
+    :return: Nothing, override file with new headers
     """
     current_file = CsvObject(csv_file_path)
 
@@ -113,3 +114,55 @@ def rename_headers(csv_file_path, new_headers, write_dir, write_name):
             reformed_headers.append(header)
 
     write_csv(write_dir, write_name, reformed_headers, current_file.row_data)
+
+
+def open_setter(path):
+    """
+    Some files may be zipped, opens files according to the zip status
+
+    :param path: File path
+    :type path: Path
+    :return: gzip.open if the file is gzipped else open
+    """
+    if path.suffix == ".gz":
+        return gzip.open
+    else:
+        return open
+
+
+def decode_line(line, zip_status):
+    """
+    Some files may be zipped, when we open zipped files we will need to decode them
+
+    :param line: Current line from open file, zipped or otherwise
+    :param zip_status: If the file is zipped or not
+    :return: decoded line from the open file
+    """
+    if zip_status:
+        return line.decode("utf-8").split()
+    else:
+        return line.split()
+
+
+def validate_path(path, allow_none=True):
+    """
+    When we have multiple types of files and directories, some may be allow to be None as they will not be required
+    whilst others like the working directory will always be required. This method is a generalisation of individual
+    setters.
+
+    :param path: Path to a directory or file
+    :type path: str
+
+    :param allow_none: Defaults to True, if true if a path is set to none it will just return None. If False, an
+        assertion will be run to validate that it is not none. In both cases, should the file not be None, then the
+        path is validated via Path.exists()
+    :type allow_none: Bool
+
+    :return: Path to the current file or directory if None return is not allowed, otherwise the Path return is
+        optional and the return may be none.
+    """
+    if allow_none and not path:
+        return None
+    else:
+        assert path and Path(path).exists(), f"Path is invalid: {path}"
+        return Path(path)
