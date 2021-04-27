@@ -250,3 +250,18 @@ def normalisation_min_max(list_of_values):
     value_min = min(list_of_values)
     value_max = max(list_of_values)
     return [((value - value_min) / (value_max - value_min)) for value in list_of_values]
+
+
+def z_scores(column_of_values):
+    """
+    Calculate the mean and standard deviation of the values, then create and return a z score for each value
+
+    :param column_of_values: A list of numerical values
+    :type column_of_values: list[int] | list[float]
+
+    :return: A list of floats
+    :rtype: list[float]
+    """
+    mean = np.mean(column_of_values)
+    std = np.std(column_of_values, ddof=1)
+    return [((v - mean) / std) for v in column_of_values]
