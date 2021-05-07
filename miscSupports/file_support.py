@@ -166,3 +166,36 @@ def validate_path(path, allow_none=True):
     else:
         assert path and Path(path).exists(), f"Path is invalid: {path}"
         return Path(path)
+
+
+class FileOut:
+    def __init__(self, write_directory, write_name, file_type):
+        """
+        Sometimes manual logging via the logging model may not work entirely as planned such as when subprocess Blender.
+        In other cases, it can be useful to have a class object that is built around a open file that can take multiple
+        forms of input and write them to a file.
+
+        :param write_directory: Directory of output file
+        :type write_directory: Path | str
+
+        :param write_name: File name
+        :type write_name: str
+
+        :param file_type: The file extension you want the file to output as
+        :type file_type: str
+        """
+
+        self.file = open(Path(write_directory, f"{write_name}.{file_type}"), "w")
+
+    def write(self, line):
+        """Write and flush a line to a file"""
+        self.file.write(f"{line}\n")
+        self.file.flush()
+
+    def write_from_list(self, values_list):
+        """Write a list of variables to a file as a comma delimited line"""
+        self.file.write(f"{','.join(values_list)}\n")
+
+    def close(self):
+        """Close the log via objected rather than attribute"""
+        self.file.close()
