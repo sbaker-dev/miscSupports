@@ -1,4 +1,7 @@
+from contextlib import contextmanager
 from distutils.util import strtobool
+import sys
+import os
 
 
 def parse_as_numeric(value, return_type=int):
@@ -51,3 +54,33 @@ def string_to_bool(value):
         return bool(strtobool(value))
     else:
         raise TypeError(f"string_to_bool expects a bool or str yet was passed {type(value)}")
+
+
+@contextmanager
+def suppress_stdout():
+    """
+    Suppress print statements
+
+    Note
+    ----
+    Sometimes external packages will prints every step which can end up cluttering .log's or terminal output. This will
+    silence it.
+
+    Source: https://stackoverflow.com/questions/2125702/how-to-suppress-console-output-in-python
+
+    Example
+    -------
+    >>> print("You can't silence me!")
+    >>> with suppress_stdout():
+    >>>     print("...or maybe not")
+
+
+
+    """
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        sys.stdout = devnull
+        try:
+            yield
+        finally:
+            sys.stdout = old_stdout
