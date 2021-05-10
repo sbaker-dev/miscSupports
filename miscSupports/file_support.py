@@ -116,34 +116,6 @@ def rename_headers(csv_file_path, new_headers, write_dir, write_name):
     write_csv(write_dir, write_name, reformed_headers, current_file.row_data)
 
 
-def open_setter(path):
-    """
-    Some files may be zipped, opens files according to the zip status
-
-    :param path: File path
-    :type path: Path
-    :return: gzip.open if the file is gzipped else open
-    """
-    if path.suffix == ".gz":
-        return gzip.open
-    else:
-        return open
-
-
-def decode_line(line, zip_status):
-    """
-    Some files may be zipped, when we open zipped files we will need to decode them
-
-    :param line: Current line from open file, zipped or otherwise
-    :param zip_status: If the file is zipped or not
-    :return: decoded line from the open file
-    """
-    if zip_status:
-        return line.decode("utf-8").split()
-    else:
-        return line.split()
-
-
 def validate_path(path, allow_none=True):
     """
     When we have multiple types of files and directories, some may be allow to be None as they will not be required
