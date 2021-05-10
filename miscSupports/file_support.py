@@ -194,7 +194,7 @@ class FileOut:
 
     def write_from_list(self, values_list):
         """Write a list of variables to a file as a comma delimited line"""
-        self.file.write(f"{','.join(values_list)}\n")
+        self.file.write(f"{','.join([str(v) for v in values_list])}\n")
 
     def close(self):
         """Close the log via objected rather than attribute"""
