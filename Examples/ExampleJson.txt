@@ -1,0 +1,22 @@
+{
+    "Squige": {
+        "Age": 11,
+        "Breed": "Tabby",
+        "Sex": "Female"
+    },
+    "Teasle": {
+        "Age": 17,
+        "Breed": "Ginger Tabby",
+        "Sex": "Male"
+    },
+    "Thistle": {
+        "Age": 15,
+        "Bread": "Tabby",
+        "Sex": "Female"
+    },
+    "Willow": {
+        "Age": 13,
+        "Breed": "Tabby",
+        "Sex": "Female"
+    }
+}
