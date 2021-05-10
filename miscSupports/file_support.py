@@ -4,7 +4,6 @@ from pathlib import Path
 import pickle
 import json
 import yaml
-import gzip
 import csv
 import os
 
@@ -141,7 +140,7 @@ def validate_path(path, allow_none=True):
 
 
 class FileOut:
-    def __init__(self, write_directory, write_name, file_type):
+    def __init__(self, write_directory, write_name, file_type, print_out=False):
         """
         Sometimes manual logging via the logging model may not work entirely as planned such as when subprocess Blender.
         In other cases, it can be useful to have a class object that is built around a open file that can take multiple
@@ -155,17 +154,26 @@ class FileOut:
 
         :param file_type: The file extension you want the file to output as
         :type file_type: str
+
+        :param print_out: If true will print out each line that was written to log, defaults to False
+        :type print_out: bool
         """
 
         self.file = open(Path(write_directory, f"{write_name}.{file_type}"), "w")
+        self.print_out = print_out
 
     def write(self, line):
         """Write and flush a line to a file"""
+        if self.print_out:
+            print(line)
+
         self.file.write(f"{line}\n")
         self.file.flush()
 
     def write_from_list(self, values_list):
         """Write a list of variables to a file as a comma delimited line"""
+        if self.print_out:
+            print(values_list)
         self.file.write(f"{','.join([str(v) for v in values_list])}\n")
 
     def close(self):
