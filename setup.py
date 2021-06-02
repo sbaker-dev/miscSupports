@@ -16,7 +16,7 @@ MAINTAINER = 'Samuel Baker'
 MAINTAINER_EMAIL = 'samuelbaker.researcher@gmail.com'
 LICENSE = 'MIT'
 DOWNLOAD_URL = "https://github.com/sbaker-dev/miscSupports"
-VERSION = "0.07.3"
+VERSION = "0.07.4"
 PYTHON_REQUIRES = ">=3.6"
 
 INSTALL_REQUIRES = [

@@ -68,6 +68,14 @@ def load_yaml(path_to_file):
             raise yaml.YAMLError
 
 
+def write_yaml(write_dict, directory, write_name):
+    """
+    Write a yaml file
+    """
+    with open(Path(directory, f"{write_name}.yaml"), "w") as outfile:
+        yaml.dump(write_dict, outfile, default_flow_style=False)
+
+
 def load_pickle(directory, file_name):
     """Load Pickle Data"""
     with open(Path(directory, file_name), 'rb') as handle:
