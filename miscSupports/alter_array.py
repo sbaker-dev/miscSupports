@@ -1,4 +1,4 @@
-from .Errors import TupleTypeError, SubListsNotEqualLength
+from .Errors import SubListsNotEqualLength
 
 from itertools import groupby, chain
 from collections import Counter
@@ -270,13 +270,3 @@ def z_scores(column_of_values):
     std = np.std(column_of_values, ddof=1)
     return [((v - mean) / std) for v in column_of_values]
 
-
-def tuple_convert(str_of_tuple, convert_type=float, must_be_string=False):
-    """Convert string representations of a tuple of floats back a tuple of convert_type"""
-    if isinstance(str_of_tuple, str):
-        split_values = str_of_tuple.split(",")
-        return tuple([convert_type(value.replace("(", "").replace(")", "")) for value in split_values])
-    elif isinstance(str_of_tuple, (tuple, list)) and not must_be_string:
-        return str_of_tuple
-    else:
-        raise TupleTypeError(str_of_tuple)

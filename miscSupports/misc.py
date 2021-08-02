@@ -1,5 +1,4 @@
 from contextlib import contextmanager
-from distutils.util import strtobool
 import sys
 import os
 
@@ -42,20 +41,6 @@ def index_range(index, modifier, inclusive=True):
         return range(index_modifier(index, modifier), index_modifier(index, modifier, 1))
 
 
-def string_to_bool(value):
-    """
-    This will convert a string to a bool if it is a str, return the bool if it was a bool, and raise a TypeError
-    otherwise
-    """
-
-    if isinstance(value, bool):
-        return value
-    elif isinstance(value, str):
-        return bool(strtobool(value))
-    else:
-        raise TypeError(f"string_to_bool expects a bool or str yet was passed {type(value)}")
-
-
 @contextmanager
 def suppress_stdout():
     """
@@ -84,27 +69,3 @@ def suppress_stdout():
             yield
         finally:
             sys.stdout = old_stdout
-
-
-def sep_num(number, space=True):
-    """
-    Creates a string representation of a number with separators each thousand. If space is True, then it uses spaces for
-    the separator otherwise it will use commas
-
-    Note
-    ----
-    Source: https://stackoverflow.com/questions/16670125/python-format-string-thousand-separator-with-spaces
-
-    :param number: A number
-    :type number: int | float
-
-    :param space: Separates numbers with spaces if True, else with commas
-    :type space: bool
-
-    :return: string representation with space separation
-    :rtype: str
-    """
-    if space:
-        return '{:,}'.format(number).replace(',', ' ')
-    else:
-        return '{:,}'.format(number)
