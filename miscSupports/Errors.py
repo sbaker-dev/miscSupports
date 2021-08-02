@@ -12,3 +12,10 @@ class SubListsNotEqualLength(Exception):
             f"\n\tflip_lists requires all sub lists to be of equal length yet found:"
             f"\n\tList Lengths -> {sub_lengths}"
         )
+
+
+class InvalidDateType(Exception):
+    def __init__(self, method_name, dates_list):
+        super(InvalidDateType, self).__init__(
+            f"\n\t{method_name} takes a expects a str, list, or tuple yet found {type(dates_list)}"
+        )

@@ -1,3 +1,4 @@
+from .Errors import InvalidDateType
 from datetime import datetime
 
 
@@ -27,7 +28,7 @@ def invert_dates(dates_list, delimiter="/"):
         return str(dates_list.year) + str(dates_list.month).zfill(2) + str(dates_list.day).zfill(2)
 
     else:
-        raise TypeError(f"invert_dates expects a str, list, or tuple yet found {type(dates_list)}")
+        raise InvalidDateType("invert_dates", dates_list)
 
 
 def restore_dates(inverted_dates):
@@ -43,7 +44,7 @@ def restore_dates(inverted_dates):
         return [datetime(int(str(date)[:4]), int(str(date)[4:6]), int(str(date)[6:])) for date in inverted_dates]
 
     else:
-        raise TypeError(f"restores_dates expects a str, list or tuple yet found {type(inverted_dates)}")
+        raise InvalidDateType("restore_dates", inverted_dates)
 
 
 def terminal_time():
