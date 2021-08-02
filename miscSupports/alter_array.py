@@ -265,3 +265,9 @@ def z_scores(column_of_values):
     mean = np.mean(column_of_values)
     std = np.std(column_of_values, ddof=1)
     return [((v - mean) / std) for v in column_of_values]
+
+
+def tuple_convert(str_of_tuple, convert_type=float):
+    """Convert string representations of a tuple of floats back a tuple of convert_type"""
+    split_values = str_of_tuple.split(",")
+    return tuple([convert_type(value.replace("(", "").replace(")", "")) for value in split_values])
