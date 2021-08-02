@@ -19,3 +19,9 @@ class InvalidDateType(Exception):
         super(InvalidDateType, self).__init__(
             f"\n\t{method_name} takes a expects a str, list, or tuple yet found {type(dates_list)}"
         )
+
+
+class InvalidBool(Exception):
+    def __init__(self, bool_var):
+        super(InvalidBool, self).__init__(
+            f"\n\tstring_to_bool requires the variable to be a string or a bool yet was passed {type(bool_var)}")
