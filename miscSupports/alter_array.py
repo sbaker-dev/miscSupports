@@ -1,4 +1,4 @@
-from .Errors import TupleTypeError
+from .Errors import TupleTypeError, SubListsNotEqualLength
 
 from itertools import groupby, chain
 from collections import Counter
@@ -183,14 +183,16 @@ def flip_list(list_of_lists, length_return=False):
     This will take a list of lists, and then flip it. It requires all sub lists to be the same length.
     """
     list_of_keys = Counter([len(sub_list) for sub_list in list_of_lists])
-    sub_key_length = list(list_of_keys.keys())
 
-    assert len(list_of_keys.keys()) == 1, f"Sub lists should be all of the same length yet found lengths" \
-                                          f"{sub_key_length}"
-    if length_return:
-        return [[sub[i] for sub in list_of_lists] for i in range(sub_key_length[0])], sub_key_length[0]
+    if len(list_of_keys.keys()) != 1:
+        raise SubListsNotEqualLength(list(list_of_keys.keys()))
     else:
-        return [[sub[i] for sub in list_of_lists] for i in range(sub_key_length[0])]
+        sub_key_length = list(list_of_keys.keys())[0]
+
+    if length_return:
+        return [[sub[i] for sub in list_of_lists] for i in range(sub_key_length)], sub_key_length
+    else:
+        return [[sub[i] for sub in list_of_lists] for i in range(sub_key_length)]
 
 
 def spaced_points(points_list, return_spacing=False, use_spacing=None):
