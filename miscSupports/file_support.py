@@ -88,6 +88,13 @@ def write_pickle(directory, file_name, data):
         pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
+def write_markdown(directory, file_name, lines_to_write):
+    """Write MarkDown File"""
+    with open(Path(directory, f"{file_name}.md"), "w") as outfile:
+        for line in lines_to_write:
+            outfile.write(line)
+
+
 def extract_headers(path):
     """
     Extract the first row from the file and return it as a list
