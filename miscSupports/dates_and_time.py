@@ -1,5 +1,7 @@
 from .Errors import InvalidDateType
-from datetime import datetime
+from miscSupports import flip_list
+
+from datetime import datetime, timedelta
 
 
 def invert_dates(dates_list, delimiter="/"):
@@ -102,3 +104,56 @@ def rebase_year(base_date, rebase_list):
     for i, y in enumerate(rebase_list):
         if (i > 0) and (rebase_list[i - 1] <= base_date < y):
             return rebase_list[i - 1].year
+
+
+class WeeklyToMonthly:
+    def __init__(self, annual_data, date_index, numeric_start, not_applicable='NA', dates_restore=True):
+
+        self.annual_data = annual_data
+        self.row_length = len(self.annual_data[0])
+        self.date_index = date_index
+        self.na = not_applicable
+        self.dates_restore = dates_restore
+        self.numeric_start = numeric_start
+
+    def convert(self, start_date, end_date):
+        """This will convert YYYYMMDD data into YYYYMM"""
+
+        daily_dates = {}
+        [self._convert_to_days(data_row, daily_dates) for data_row in self.annual_data]
+
+        return [self._days_to_months(year, month, daily_dates)
+                for year in range(start_date, end_date) for month in range(1, 13)]
+
+    def _convert_to_days(self, row, dates_dict):
+        """
+        Weekly data may contain multiple months, this splits it equally into days so that it can be joined to the
+        respected months required
+        """
+
+        # Restore the date
+        date = self._load_date(row)
+
+        # Convert the weekly values into days
+        values = [float(v) / 7 if v != self.na else self.na for v in row[self.numeric_start:]]
+
+        # Add the current day, and previous six to a dict
+        for i in range(7):
+            dates_dict[date - timedelta(i)] = values
+
+    def _load_date(self, row):
+        """Load the date in the format required based on its input"""
+        if self.dates_restore:
+            return restore_dates(row[self.date_index])
+        else:
+            raise NotImplementedError("Dates other than YYYYMMDD not currently supported")
+
+    def _days_to_months(self, year, month, daily_dates):
+        """We now match all the days within each year-month and sum them up together"""
+
+        month_rows = [values for date, values in daily_dates.items() if (date.year == year) and (date.month == month)]
+
+        if len(month_rows) > 0:
+            return [year, month] + [sum(attr) if self.na not in attr else self.na for attr in flip_list(month_rows)]
+        else:
+            return [year, month] + [self.na for _ in range(self.row_length)]
