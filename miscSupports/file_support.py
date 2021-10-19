@@ -14,7 +14,7 @@ def directory_iterator(directory, file_only=True):
     files as apposed to directories will be returned
 
     :param directory: The directory you wish to iterate through
-    :type directory: str
+    :type directory: str | Path
 
     :param file_only: Defaults to true where the return is just a list of files
     :type file_only: bool
@@ -137,7 +137,7 @@ def validate_path(path, allow_none=True):
     setters.
 
     :param path: Path to a directory or file
-    :type path: str
+    :type path: str | Path
 
     :param allow_none: Defaults to True, if true if a path is set to none it will just return None. If False, an
         assertion will be run to validate that it is not none. In both cases, should the file not be None, then the
