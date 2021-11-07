@@ -3,6 +3,7 @@ from .Errors import SubListsNotEqualLength
 from itertools import groupby, chain
 from collections import Counter
 import numpy as np
+import warnings
 
 
 def flatten(list_of_lists):
@@ -206,6 +207,9 @@ def spaced_points(points_list, return_spacing=False, use_spacing=None):
 
     If you want to use your own spacing, provide it to use spacing
     """
+    warnings.warn('Spaced Points is deprecated, should probably use spaced_points_numpy for now, will change name in '
+                  'future')
+
     if use_spacing:
         spacing = use_spacing
     else:
@@ -223,6 +227,21 @@ def spaced_points(points_list, return_spacing=False, use_spacing=None):
         return spacing, points_spaced
     else:
         return points_spaced
+
+
+def spaced_points_numpy(array: np.ndarray, num_elems: int, return_indices: bool = True):
+    """
+    Isolate indexes from a list based on a num_elements provided, can also return values if return_indexes set to false
+
+    source:
+
+    https://stackoverflow.com/questions/50685409/select-n-evenly-spaced-out-elements-in-array-including-first-and-last
+    """
+    indices = np.round(np.linspace(0, len(array) - 1, num_elems)).astype(int)
+    if return_indices:
+        return indices
+    else:
+        return array[indices]
 
 
 def remove_nested_duplicates(nested):
