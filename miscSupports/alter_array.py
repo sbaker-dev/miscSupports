@@ -1,5 +1,6 @@
 from .Errors import SubListsNotEqualLength
 
+from typing import List, Optional, Any
 from itertools import groupby, chain
 from collections import Counter
 import numpy as np
@@ -244,6 +245,24 @@ def spaced_points_numpy(array: np.ndarray, num_elems: int, return_indices: bool 
         return array[indices]
 
 
+def deep_get(dict_to_parse: dict, nested_keys: List, default: Optional[Any] = None):
+    """
+    Isolate a nested dict key
+
+    Base from Pithikos at:
+    https://stackoverflow.com/questions/25833613/safe-method-to-get-value-of-nested-dictionary
+    """
+
+    if not isinstance(nested_keys, list):
+        raise TypeError(f"Nested Keys must be a list, yet found {type(nested_keys)}")
+
+    if dict_to_parse is None:
+        return default
+    if not nested_keys:
+        return dict_to_parse
+    return deep_get(dict_to_parse.get(nested_keys[0]), nested_keys[1:], default)
+
+
 def remove_nested_duplicates(nested):
     """
     Removes nested duplicates lists, in a list of lists
@@ -288,4 +307,3 @@ def z_scores(column_of_values):
     mean = np.mean(column_of_values)
     std = np.std(column_of_values, ddof=1)
     return [((v - mean) / std) for v in column_of_values]
-
