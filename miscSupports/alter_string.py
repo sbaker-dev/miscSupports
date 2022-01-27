@@ -1,6 +1,7 @@
 from .Errors import TupleTypeError, InvalidBool
 
 from distutils.util import strtobool
+import re
 
 
 def tuple_convert(str_of_tuple, convert_type=float, must_be_string=False):
@@ -50,3 +51,20 @@ def sep_num(number, space=True):
         return '{:,}'.format(number).replace(',', ' ')
     else:
         return '{:,}'.format(number)
+
+
+def string_contains_numbers(string: str) -> bool:
+    """
+    Check to see if the string has a digit within it
+
+    Source: https://stackoverflow.com/questions/19859282/check-if-a-string-contains-a-number
+    """
+    return any(char.isdigit() for char in string)
+
+
+def simplify_string(string_to_simplify: str) -> str:
+    """
+    Strip a string of all non alphanumeric characters, white space, and capital letters
+    """
+    string_to_simplify = string_to_simplify.replace("&", "and")
+    return re.sub(r"[\W]", "", string_to_simplify).lower()
