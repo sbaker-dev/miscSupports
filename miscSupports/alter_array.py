@@ -242,7 +242,7 @@ def spaced_points_numpy(array: np.ndarray, num_elems: int, return_indices: bool 
     if return_indices:
         return indices
     else:
-        return array[indices]
+        return np.array(array)[indices].tolist()
 
 
 def deep_get(dict_to_parse: dict, nested_keys: List, default: Optional[Any] = None):
