@@ -20,6 +20,12 @@ def chunk_list(list_to_chunk, chunk_length):
     return [list_to_chunk[i:i + max(1, chunk_length)] for i in range(0, len(list_to_chunk), max(1, chunk_length))]
 
 
+def chunk_list_inclusive(point_list, group_size, number_of_groups):
+    """Group points lists inclusively, where indexes overlap, to ensure there are no gaps"""
+    groups = [[index + (group_size * i) for index in range(group_size + 1)] for i in range(0, number_of_groups)]
+    return [[point_list[i] for i in indexes] for indexes in groups]
+
+
 def find_duplicates(list_to_check):
     """
     This finds duplicates in a list of values of any type and then returns the values that are duplicates. Given Counter
@@ -271,3 +277,33 @@ def z_scores(column_of_values):
     mean = np.mean(column_of_values)
     std = np.std(column_of_values, ddof=1)
     return [((v - mean) / std) for v in column_of_values]
+
+
+def force_equal(side1, side2):
+    """
+    Force the two sides to be equal to the largest via linear interpolation
+    """
+    if len(side1) > len(side2):
+        return side1, adjust_smaller_bound(side2, len(side1) - len(side2))
+    else:
+        return adjust_smaller_bound(side1, len(side2) - len(side1)), side2
+
+
+def adjust_smaller_bound(smallest, difference):
+    """
+    Add 'difference' number of points to the list, by placing them between known points, until count == difference
+    """
+    count = 0
+    equaled = []
+    for i, point in enumerate(smallest):
+        if i == 0 or count == difference:
+            equaled.append(point)
+        elif count < difference:
+            equaled.append(np.linspace(smallest[i - 1], point, 3)[1].tolist())
+            equaled.append(point)
+            count += 1
+    return equaled
+
+
+
+
