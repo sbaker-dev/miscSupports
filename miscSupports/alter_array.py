@@ -1,10 +1,9 @@
 from .Errors import SubListsNotEqualLength
 
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Union
 from itertools import groupby, chain
 from collections import Counter
 import numpy as np
-import warnings
 
 
 def flatten(list_of_lists):
@@ -197,52 +196,17 @@ def flip_list(list_of_lists, length_return=False):
         return [[sub[i] for sub in list_of_lists] for i in range(sub_key_length)]
 
 
-def spaced_points(points_list, return_spacing=False, use_spacing=None):
-    """
-    Spaces a list of points based on the average distance between each point
-
-    This will create a spacing parameter base on the average distance between each numeric in a list of numeric, and
-    create a new list with spacing to ensure there is no gap larger than the spacing parameter. This **does not**
-    produce an equally spaced list, as this keeps the original elements. If you want the spacing returned you can pass
-    True to the second parameter, else only the spaced list will be returned
-
-    If you want to use your own spacing, provide it to use spacing
-    """
-    warnings.warn('Spaced Points is deprecated, should probably use spaced_points_numpy for now, will change name in '
-                  'future')
-
-    if use_spacing:
-        spacing = use_spacing
-    else:
-        # We use the average distance between each point to get a length for rough spacing between the edge loops
-        distance_y = [points_list[i] - points_list[i - 1] for i in range(len(points_list)) if i > 0]
-        spacing = np.mean(distance_y)
-
-    # This is the number of subdivisions between each ordered y intersection that is required
-    subdivisions = [int((points_list[i] - points_list[i - 1]) / spacing) for i in range(1, len(points_list))]
-
-    # Now we space the region between the min and max of our points of intersection with the spacing
-    points_spaced = in_between_points_on_list(points_list, subdivisions)
-
-    if return_spacing:
-        return spacing, points_spaced
-    else:
-        return points_spaced
-
-
-def spaced_points_numpy(array: np.ndarray, num_elems: int, return_indices: bool = True):
+def evenly_spaced_list(input_array: Union[np.ndarray, List], num_elems: int):
     """
     Isolate indexes from a list based on a num_elements provided, can also return values if return_indexes set to false
 
     source:
-
     https://stackoverflow.com/questions/50685409/select-n-evenly-spaced-out-elements-in-array-including-first-and-last
     """
-    indices = np.round(np.linspace(0, len(array) - 1, num_elems)).astype(int)
-    if return_indices:
-        return indices
-    else:
-        return np.array(array)[indices].tolist()
+    if num_elems > len(input_array):
+        print("Warning: N greater than list of input array, just returning the array")
+        return input_array
+    return [input_array[i] for i in np.round(np.linspace(0, len(input_array) - 1, num_elems)).astype(int)]
 
 
 def deep_get(dict_to_parse: dict, nested_keys: List, default: Optional[Any] = None):
