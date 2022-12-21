@@ -284,27 +284,25 @@ def force_equal(side1, side2):
     Force the two sides to be equal to the largest via linear interpolation
     """
     if len(side1) > len(side2):
-        return side1, adjust_smaller_bound(side2, len(side1) - len(side2))
+        return side1, subdivide_list_to_bound(side2, len(side1))
     else:
-        return adjust_smaller_bound(side1, len(side2) - len(side1)), side2
+        return subdivide_list_to_bound(side1, len(side2)), side2
 
 
-def adjust_smaller_bound(smallest, target):
-    """
-    Add 'difference' number of points to the list, by placing them between known points, until count == difference
-    """
+def subdivide_list_to_bound(array, target):
+    """Make an array equal the target length via subdivisions"""
     # The number of points to add between each gap of the smallest points list
-    indexes = np.array([i for i in range(0, target - len(smallest))])
+    indexes = np.array([i for i in range(0, target - len(array))])
 
     # Group of indexes, where we will use the length of this group to add 'length' number of points in this gap
-    sub_point_count = np.array_split(indexes, len(smallest) - 1)
+    sub_point_count = np.array_split(indexes, len(array) - 1)
 
     equaled = []
-    for i, point in enumerate(smallest):
+    for i, point in enumerate(array):
         if i == 0:
             equaled.append(point)
         else:
-            sub_points = np.linspace(smallest[i - 1], point, 2 + len(sub_point_count[i - 1]))
+            sub_points = np.linspace(array[i - 1], point, 2 + len(sub_point_count[i - 1]))
             for p in sub_points[1:-1]:
                 equaled.append(p)
             equaled.append(point)
