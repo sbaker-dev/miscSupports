@@ -289,19 +289,25 @@ def force_equal(side1, side2):
         return adjust_smaller_bound(side1, len(side2) - len(side1)), side2
 
 
-def adjust_smaller_bound(smallest, difference):
+def adjust_smaller_bound(smallest, target):
     """
     Add 'difference' number of points to the list, by placing them between known points, until count == difference
     """
-    count = 0
+    # The number of points to add between each gap of the smallest points list
+    indexes = np.array([i for i in range(0, target - len(smallest))])
+
+    # Group of indexes, where we will use the length of this group to add 'length' number of points in this gap
+    sub_point_count = np.array_split(indexes, len(smallest) - 1)
+
     equaled = []
     for i, point in enumerate(smallest):
-        if i == 0 or count == difference:
+        if i == 0:
             equaled.append(point)
-        elif count < difference:
-            equaled.append(np.linspace(smallest[i - 1], point, 3)[1].tolist())
+        else:
+            sub_points = np.linspace(smallest[i - 1], point, 2 + len(sub_point_count[i - 1]))
+            for p in sub_points[1:-1]:
+                equaled.append(p)
             equaled.append(point)
-            count += 1
     return equaled
 
 
