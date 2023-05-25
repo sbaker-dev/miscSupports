@@ -53,7 +53,7 @@ def write_json(write_data, write_directory, write_name):
     :return: Nothing, just write out the file to the specified directory named the specified name
     :rtype: None
     """
-    with open(f"{write_directory}/{write_name}.json", "w", encoding="utf-8") as json_saver:
+    with open(f"{write_directory}/{write_name}.txt", "w", encoding="utf-8") as json_saver:
         json.dump(write_data, json_saver, ensure_ascii=False, indent=4, sort_keys=True)
 
 
